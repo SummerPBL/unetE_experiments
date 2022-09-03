@@ -40,6 +40,7 @@ def log_statistics(\
         mse_loss_per_epoch:Optional[List[float]]=None, \
             \
         dice_scores_per_epoch:np.ndarray=None,\
+        x0_4_only:bool=False
         )->None:
     if __name__ =='__main__':
         assert(len(dice_loss_per_batches)%samples_per_epoch==0)
@@ -89,9 +90,15 @@ def log_statistics(\
     axes.legend()
     if __name__ =='__main__':
         plt.show()
-    fig.savefig(os.path.join(log_dir,'loss per batches.jpg'), dpi=800)
+    if x0_4_only==False:
+        fig.savefig(os.path.join(log_dir,'loss per batches.jpg'), dpi=800)
+    else:
+        fig.savefig(os.path.join(log_dir,'X(0,4) loss per batches.jpg'), dpi=800)
     
-    with open(os.path.join(log_dir,'loss per batches.csv'),'w',newline='') as file:
+    csv_file_name='loss per batches.csv'
+    if x0_4_only:
+        csv_file_name='x(0,4) loss per batches.csv'
+    with open(os.path.join(log_dir,csv_file_name),'w',newline='') as file:
         main_writer=csv.writer(file)
         table_header=['epoch','dice loss',]
         if bce_loss_per_batches is not None:
@@ -150,9 +157,15 @@ def log_statistics(\
     axes.legend()
     if __name__ == '__main__':
         plt.show()
-    fig.savefig(os.path.join(log_dir,'loss per epoch.jpg'), dpi=800)
+    if x0_4_only==False:
+        fig.savefig(os.path.join(log_dir,'loss per epoch.jpg'), dpi=800)
+    else:
+        fig.savefig(os.path.join(log_dir,'X(0,4) loss per epoch.jpg'), dpi=800)
 
-    with open(os.path.join(log_dir,'loss per epoch.csv'),'w',newline='') as file:
+    csv_file_name='loss per epoch.csv'
+    if x0_4_only==True:
+        csv_file_name='X(0,4) loss per epoch.csv'
+    with open(os.path.join(log_dir,csv_file_name),'w',newline='') as file:
         main_writer=csv.writer(file)
         table_header=['epoch','dice loss',]
         if bce_loss_per_epoch is not None:
